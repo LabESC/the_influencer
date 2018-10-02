@@ -2,7 +2,8 @@
 
 class ecosystem:
 
-    def __init__(self):
+    def __init__(self, ecosystem_name):
+        self.ecosystem_name = ecosystem_name
         self.projects = []
         self.total_ecosystem_influence = 0
 
