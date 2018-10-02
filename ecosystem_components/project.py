@@ -2,7 +2,8 @@
 
 class project:
 
-    def __init__(self):
+    def __init__(self, project_name):
+        self.project_name = project_name
         self.users = []
         self.total_project_influence = 0
 
