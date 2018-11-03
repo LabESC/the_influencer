@@ -46,7 +46,7 @@ class home_page(pages):
         self.text_directory_location.config(state="disabled")
 
 
-    def start_analysis(self):
+    def start_analysis(self, page):
         location = self.text_directory_location.get(1.0, 'end-1c')
         if not verify_directory_existence(location):
             print(location)
@@ -56,6 +56,7 @@ class home_page(pages):
                 remove_directory_structure(location)
             else:
                 create_directory_structure(location)
+                page.show()
 
 class results_page(pages):
     def __init__(self, *args, **kwargs):
@@ -105,4 +106,4 @@ class main_page(tk.Frame):
         self.home_page_frame.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
         self.results_page_frame.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
 
-        self.results_page_frame.show()
+        self.home_page_frame.show()

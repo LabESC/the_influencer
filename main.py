@@ -1,17 +1,12 @@
-from pages.pages import pages
+from pages.pages import python_gui
 from pages.app_pages import main_page
 import tkinter as tk
 
 
 def main():
-    #pages()
 
-    root = tk.Tk()
-    root.title("The Influencer")
-    main = main_page(root)
-    main.pack(side="top", fill="both", expand=True)
-    root.wm_geometry("550x350")
-    root.mainloop()
+    gui = python_gui()
+    gui.mainloop()
 
 
 
