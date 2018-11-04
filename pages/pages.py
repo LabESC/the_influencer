@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 from tkinter import filedialog
 from assistants.directories import *
 import os
@@ -32,12 +33,21 @@ class results_frame(base_frame):
                                           text="Or you could see the influencer for a specific project...")
         suggestion_for_project.grid(pady=10)
 
-        choice = tk.StringVar(self)
-        choices = {"project1", "project2", "project3"}
-        choice.set("project1")
+        #choices = self.get_gexf_directory_files()
+        #choice = tk.StringVar(self)
+        #choice.set(choices.pop())
+        #choices = {"project1", "project2", "project3"}
+        #choice.set("project1")
 
-        ecosystem_options = tk.OptionMenu(self, choice, *choices)
-        ecosystem_options.grid()
+        #ecosystem_options = tk.OptionMenu(self, choice, *choices)
+        #ecosystem_options.grid()
+
+        directory_search_button = tk.Button(self, text="Find", command=self.file_search_button_function)
+        directory_search_button.grid()
+
+        self.text_file_location = tk.Text(self, height=2, width=30, )
+        self.text_file_location.config(state="disabled")
+        self.text_file_location.grid(padx=30)
 
         show_project_button = tk.Button(self, text="Show my Project's Influencer!")
         show_project_button.grid()
@@ -49,6 +59,17 @@ class results_frame(base_frame):
                                     pady=5,
                                     text="Home")
         self.new_button.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+
+    def get_gexf_directory_files(location):
+        choices = get_gexf_directory_files_to_vector(location)
+        return choices
+
+    def file_search_button_function(self):
+        location = filedialog.askopenfile()
+        self.text_file_location.config(state="normal")
+        self.text_file_location.delete(1.0, "end")
+        self.text_file_location.insert("end", location.name)
+        self.text_file_location.config(state="disabled")
 
 
 class home_frame(base_frame):
@@ -93,15 +114,40 @@ class home_frame(base_frame):
 
     def start_analysis(self):
         location = self.text_directory_location.get(1.0, 'end-1c')
+        complete_location = os.path.join(location, "ecosystem_gexf")
         if not verify_directory_existence(location):
-            print(location)
-            print("location invalida")
+            self.path_is_invalid_warning(location)
         else:
-            if verify_directory_existence(os.path.join(location, "ecosystem_gexf")):
-                remove_directory_structure(location)
+            if verify_csv_files_existence_in_path(location):
+                if verify_directory_existence(complete_location):
+                    if self.analysis_exists_question(complete_location):
+                        print("true")
+                else:
+                    create_directory_structure(location)
+                    self.controller.show_frame(results_frame)
             else:
-                create_directory_structure(location)
-                self.controller.show_frame(results_frame)
+                self.no_csv_file_warning(location)
+
+
+    def path_is_invalid_warning(self, location):
+        messagebox.showwarning("Path is empty", "Select your SECO path before analyzing")
+
+    def analysis_exists_question(self, location):
+        answer = tk.messagebox.askyesno("Question", "There is already an analysis on this SECO.\n"
+                                                    "Would like to erase it and run the analysis again?")
+        if answer:
+            remove_directory_structure(location)
+            return True
+        return False
+
+    def verify_csv_files_existence(self, location):
+        if verify_csv_files_existence_in_path(location):
+            return True
+        return False
+
+    def no_csv_file_warning(self, location):
+        messagebox.showwarning("No .csv files found", "No .csv files found at " + location + "\nSelect the "
+                                                                        "directory where your .csv files are located")
 
 
 class python_gui(tk.Tk):

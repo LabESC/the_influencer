@@ -12,5 +12,17 @@ def create_directory_structure(directory_path):
     os.mkdir(projects_gexf_directory)
 
 def remove_directory_structure(directory_path):
-    gexf_directory = os.path.join(directory_path, "ecosystem_gexf")
-    shutil.rmtree(gexf_directory)
+    shutil.rmtree(directory_path)
+
+def verify_csv_files_existence_in_path(directory_path):
+    for file in os.listdir(directory_path):
+        if file.endswith(".csv"):
+            return True
+    return False
+
+def get_gexf_directory_files_to_vector(directory_path):
+    vector = []
+    for file in os.listdir(directory_path):
+        if file.endswith(".gexf"):
+            vector.append(file)
+    return vector
