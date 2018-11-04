@@ -5,6 +5,9 @@ import shutil
 def verify_directory_existence(directory_path):
     return os.path.isdir(directory_path)
 
+def verify_file_existence(file_path):
+    return os.path.isfile(file_path)
+
 def create_directory_structure(directory_path):
     gexf_directory = os.path.join(directory_path, "ecosystem_gexf")
     os.mkdir(gexf_directory)

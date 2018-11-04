@@ -42,14 +42,14 @@ class results_frame(base_frame):
         #ecosystem_options = tk.OptionMenu(self, choice, *choices)
         #ecosystem_options.grid()
 
-        directory_search_button = tk.Button(self, text="Find", command=self.file_search_button_function)
+        directory_search_button = tk.Button(self, text="Find project file", command=self.file_search_button_function)
         directory_search_button.grid()
 
         self.text_file_location = tk.Text(self, height=2, width=30, )
         self.text_file_location.config(state="disabled")
         self.text_file_location.grid(padx=30)
 
-        show_project_button = tk.Button(self, text="Show my Project's Influencer!")
+        show_project_button = tk.Button(self, text="Show my Project's Influencer!", command=self.show_project)
         show_project_button.grid()
 
         self.new_button = tk.Button(self,
@@ -65,11 +65,34 @@ class results_frame(base_frame):
         return choices
 
     def file_search_button_function(self):
-        location = filedialog.askopenfile()
+        location = filedialog.askopenfile(initialdir=os.getcwd(), title="Select the project file",
+                                          filetypes = (("gexf files","*.gexf"),("all files","*.*")))
         self.text_file_location.config(state="normal")
         self.text_file_location.delete(1.0, "end")
-        self.text_file_location.insert("end", location.name)
+        try:
+            self.text_file_location.insert("end", location.name)
+        except:
+            pass
         self.text_file_location.config(state="disabled")
+
+    def show_ecosystem(self, ecosystem_file_path):
+        gephi_home = os.getenv("GEPHI_HOME")
+        gephi_executable = os.path.join(gephi_home)
+        gephi_executable = os.path.join(gephi_executable)
+        ecosystem_file_path_normalized = os.path.normcase(ecosystem_file_path)
+        command = "\"" + gephi_executable + "\" " + ecosystem_file_path_normalized
+        os.system(command)
+
+    def show_project(self):
+        gephi_home = os.getenv("GEPHI_HOME")
+        gephi_executable = os.path.join(gephi_home, "bin")
+        gephi_executable = os.path.join(gephi_executable, "gephi")
+        file_location = os.path.normcase(self.text_file_location.get(1.0, 'end-1c'))
+        if verify_file_existence(file_location):
+            command = "\"" + gephi_executable + "\" " + file_location
+            os.system(command)
+        else:
+            messagebox.showwarning("Path is empty", "Select your project file")
 
 
 class home_frame(base_frame):
