@@ -2,7 +2,7 @@
 
 class user:
 
-    def __init__(self):
+    def __init__(self, name):
         self.ecosystem_influence_level = 0
         self.project_influence_level = 0
         self.user_cl_influence_metric = 0
