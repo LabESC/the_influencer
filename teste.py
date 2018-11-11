@@ -22,7 +22,7 @@ for file in os.listdir(diretorio):
         ecosystem_project = project(project_name)
 
         counter = 0
-        print(csv_info_file.retrieve_quantity_of_users())
+
         users_names = csv_info_file.retrieve_user_information_name()
         closeness = csv_info_file.retrieve_user_information_ct()
         long_time = csv_info_file.retrieve_user_information_lt()
@@ -32,11 +32,16 @@ for file in os.listdir(diretorio):
         source_learning = csv_info_file.retrieve_user_information_sl()
         participation_code = csv_info_file.retrieve_user_information_pcode()
         participation_comment = csv_info_file.retrieve_user_information_pcomm()
+
         while counter < csv_info_file.retrieve_quantity_of_users():
-            print(users_names.pop())
+            project_user = user(users_names.pop(), project_name, closeness.pop(), long_time.pop(), status.pop(),
+                                status_project.pop(), content_value.pop(), source_learning.pop(),
+                                participation_code.pop(), participation_comment.pop())
+
+            ecosystem_project.add_user_to_project(project_user)
+
             counter += 1
 
-        print("Adding project " + project_name + " to ecosystem npm")
         ecosystem.add_project_to_ecosystem(ecosystem_project)
 
 
