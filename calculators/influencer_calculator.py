@@ -11,35 +11,35 @@ def project_influence_level_calculation(user):
 
 def project_closeness_to_github_project_owner(cl_metric):
     cl_coeficient = 1.0505
-    return cl_metric * cl_coeficient
+    return float(cl_metric) * cl_coeficient
 
 def project_long_time_interaction_with_the_project(lt_metric):
     lt_coeficient = 2.3283
-    return lt_metric * lt_coeficient
+    return float(lt_metric) * lt_coeficient
 
 def project_status_github(st_metric):
     st_coeficient = 0.9671
-    return st_metric * st_coeficient
+    return float(st_metric) * st_coeficient
 
 def project_status_in_the_project(stp_metric):
     stp_coeficient = 2.2567
-    return stp_metric * stp_coeficient
+    return float(stp_metric) * stp_coeficient
 
 def project_content_value(cv_metric):
     cv_coeficient = 2.2443
-    return cv_metric * cv_coeficient
+    return float(cv_metric) * cv_coeficient
 
 def project_source_of_learning(sl_metric):
     sl_coeficient = 1.5007
-    return sl_metric * sl_coeficient
+    return float(sl_metric) * sl_coeficient
 
 def project_participation_with_code(pcode_metric):
     pcode_coeficient = 2.3392
-    return pcode_metric * pcode_coeficient
+    return float(pcode_metric) * pcode_coeficient
 
 def project_participation_with_comments(pcomm_metric):
     pcomm_coeficient = 1.8437
-    return pcomm_metric * pcomm_coeficient
+    return float(pcomm_metric) * pcomm_coeficient
 
 def ecosystem_influence_level_calculation():
     pass

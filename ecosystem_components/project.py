@@ -12,3 +12,9 @@ class project:
         self.users.append(user)
         self.total_project_influence = self.total_project_influence + user.project_influence_level
 
+    def project_influence_calculation(self):
+        influence_level = 0
+        for user in self.users:
+            influence_level = influence_level + user.project_influence_level
+
+        self.total_project_influence = influence_level

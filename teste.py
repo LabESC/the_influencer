@@ -3,6 +3,8 @@ from ecosystem_components.ecosystem import ecosystem
 from ecosystem_components.project import project
 from ecosystem_components.user import user
 from assistants.csv_file import csv_file
+from assistants.gexf_file import gexf_file
+import calculators.influencer_calculator as calculator
 
 
 ecosystem = ecosystem("npm")
@@ -12,6 +14,7 @@ for file in os.listdir(diretorio):
     if file == "repo-index.csv":
         pass
     else:
+        project_gexf = gexf_file()
         project_name = file.split("#")[1].replace(".csv","")
         print("project: " + project_name)
         print(file)
@@ -37,10 +40,19 @@ for file in os.listdir(diretorio):
             project_user = user(users_names.pop(), project_name, closeness.pop(), long_time.pop(), status.pop(),
                                 status_project.pop(), content_value.pop(), source_learning.pop(),
                                 participation_code.pop(), participation_comment.pop())
+            project_user.define_project_influence_level(calculator.project_influence_level_calculation(project_user))
 
             ecosystem_project.add_user_to_project(project_user)
 
             counter += 1
+
+        ecosystem_project.project_influence_calculation()
+        project_gexf.insert_node_project(ecosystem_project)
+        for user_gexf in ecosystem_project.users:
+            project_gexf.insert_node_user(user_gexf, ecosystem_project)
+
+        project_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop\\gexf_sample", ecosystem_project.project_name))
+
 
         ecosystem.add_project_to_ecosystem(ecosystem_project)
 
