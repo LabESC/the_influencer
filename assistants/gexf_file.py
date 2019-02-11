@@ -26,19 +26,25 @@ class gexf_file:
         node.set("id", ecosystem.ecosystem_name)
         node.set("label", ecosystem.ecosystem_name)
         node_color = ET.SubElement(node, "viz:color")
-        node_size = ET.SubElement(node, "viz:size")
-
-    def insert_node_project_ecosystem(self, project, ecosystem):
-        node = ET.SubElement(self.nodes, "node")
-        node.set("id", project.project_name)
-        node.set("label", project.project_name)
-        node_color = ET.SubElement(node, "viz:color")
         node_color.set("r", "255")
         node_color.set("g", "0")
         node_color.set("b", "0")
         node_color.set("a", "1")
         node_size = ET.SubElement(node, "viz:size")
         node_size.set("value", str(ecosystem.total_ecosystem_influence))
+
+
+    def insert_node_project_ecosystem(self, project, ecosystem):
+        node = ET.SubElement(self.nodes, "node")
+        node.set("id", project.project_name)
+        node.set("label", project.project_name)
+        node_color = ET.SubElement(node, "viz:color")
+        node_color.set("r", "0")
+        node_color.set("g", "255")
+        node_color.set("b", "0")
+        node_color.set("a", "1")
+        node_size = ET.SubElement(node, "viz:size")
+        node_size.set("value", str(project.total_project_influence))
         edge = ET.SubElement(self.edges, "edge")
         edge.set("id", project.project_name + "_" + ecosystem.ecosystem_name)
         edge.set("source", project.project_name)
