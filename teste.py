@@ -11,7 +11,6 @@ ecosystem = ecosystem("npm")
 diretorio = "C:\\Users\\faria\\Desktop\\results"
 
 ecosystem_gexf = gexf_file()
-ecosystem_gexf.insert_node_ecosystem(ecosystem)
 
 for file in os.listdir(diretorio):
     if file == "repo-index.csv":
@@ -25,6 +24,7 @@ for file in os.listdir(diretorio):
         csv_info_file = csv_file()
         csv_info_file.load_informations(os.path.join(diretorio, file))
 
+        current_project = project(project_name)
         ecosystem_project = project(project_name)
 
         counter = 0
@@ -43,23 +43,30 @@ for file in os.listdir(diretorio):
             project_user = user(users_names.pop(), project_name, closeness.pop(), long_time.pop(), status.pop(),
                                 status_project.pop(), content_value.pop(), source_learning.pop(),
                                 participation_code.pop(), participation_comment.pop())
-            project_user.define_project_influence_level(calculator.user_influence_level_calculation_complete(project_user))
 
+            project_user.define_project_influence_level(calculator.user_influence_level_calculation_complete(project_user))
+            project_user.define_ecosystem_influence_level(calculator.user_influence_level_calculation_complete(project_user))
+
+            current_project.add_user_to_project(project_user)
             ecosystem_project.add_user_to_project(project_user)
 
             counter += 1
 
+        current_project.project_influence_calculation()
         ecosystem_project.project_influence_calculation()
-        project_gexf.insert_node_project(ecosystem_project)
-        ecosystem_gexf.insert_node_project_ecosystem(ecosystem_project, ecosystem)
-        for user_gexf in ecosystem_project.users:
-            project_gexf.insert_node_user(user_gexf, ecosystem_project)
-
-        project_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop\\gexf_sample", ecosystem_project.project_name))
-
 
         ecosystem.add_project_to_ecosystem(ecosystem_project)
 
-ecosystem_gexf.insert_node_ecosystem(ecosystem)
+        current_project.project_influence_standarization()
+
+        project_gexf.create_project_gexf(current_project)
+
+        project_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop\\gexf_sample", current_project.project_name))
+
+
+ecosystem.ecosystem_influence_standarization()
+
+ecosystem_gexf.create_ecosystem_gexf(ecosystem)
+
 ecosystem_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop", ecosystem.ecosystem_name))
 

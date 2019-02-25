@@ -8,7 +8,7 @@ def user_influence_level_calculation_complete(user):
                       project_participation_with_code(user.user_pcode_influence_metric) + \
                       project_participation_with_comments(user.user_pcomm_influence_metric)
 
-    return influence_level
+    return round(influence_level, 5)
 
 def user_influence_level_incomplete(user):
     incomplete_influence_level = project_closeness_to_github_project_owner(user.user_cl_influence_metric) + \
@@ -20,7 +20,7 @@ def user_influence_level_incomplete(user):
                       project_participation_with_code(user.user_pcode_influence_metric) + \
                       project_participation_with_comments(user.user_pcomm_influence_metric)
 
-    return incomplete_influence_level
+    return round(incomplete_influence_level, 5)
 
 def project_closeness_to_github_project_owner(cl_metric):
     cl_coeficient = 1.0505
@@ -65,5 +65,5 @@ def project_participation_with_comments(pcomm_metric):
 def ecosystem_influence_level_calculation(user):
     influence_level = user.ecosystem_influence_level + status_github(user.user_st_influence_metric)
 
-    return influence_level
+    return round(influence_level, 5)
 

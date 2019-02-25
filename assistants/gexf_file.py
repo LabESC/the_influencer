@@ -25,11 +25,13 @@ class gexf_file:
         node = ET.SubElement(self.nodes, "node")
         node.set("id", ecosystem.ecosystem_name)
         node.set("label", ecosystem.ecosystem_name)
+
         node_color = ET.SubElement(node, "viz:color")
         node_color.set("r", "255")
         node_color.set("g", "0")
         node_color.set("b", "0")
         node_color.set("a", "1")
+
         node_size = ET.SubElement(node, "viz:size")
         node_size.set("value", str(ecosystem.total_ecosystem_influence))
 
@@ -38,13 +40,16 @@ class gexf_file:
         node = ET.SubElement(self.nodes, "node")
         node.set("id", project.project_name)
         node.set("label", project.project_name)
+
         node_color = ET.SubElement(node, "viz:color")
         node_color.set("r", "0")
         node_color.set("g", "255")
         node_color.set("b", "0")
         node_color.set("a", "1")
+
         node_size = ET.SubElement(node, "viz:size")
         node_size.set("value", str(project.total_project_influence))
+
         edge = ET.SubElement(self.edges, "edge")
         edge.set("id", project.project_name + "_" + ecosystem.ecosystem_name)
         edge.set("source", project.project_name)
@@ -54,11 +59,13 @@ class gexf_file:
         node = ET.SubElement(self.nodes, "node")
         node.set("id", project.project_name)
         node.set("label", project.project_name)
+
         node_color = ET.SubElement(node, "viz:color")
         node_color.set("r", "0")
         node_color.set("g", "255")
         node_color.set("b", "0")
         node_color.set("a", "1")
+
         node_size = ET.SubElement(node, "viz:size")
         node_size.set("value", str(project.total_project_influence))
 
@@ -66,27 +73,76 @@ class gexf_file:
         node = ET.SubElement(self.nodes, "node")
         node.set("id", user.user_name)
         node.set("label", user.user_name)
+
         node_color = ET.SubElement(node, "viz:color")
         node_color.set("r", "0")
         node_color.set("g", "0")
         node_color.set("b", "255")
         node_color.set("a", "1")
+
         node_size = ET.SubElement(node, "viz:size")
         node_size.set("value", str(user.project_influence_level))
+
         edge = ET.SubElement(self.edges, "edge")
         edge.set("id", user.user_name + "_" + project.project_name)
         edge.set("source", user.user_name)
         edge.set("target", project.project_name)
 
+    def insert_node_user_ecosystem(self, user, project):
+        node = ET.SubElement(self.nodes, "node")
+        node.set("id", user.user_name)
+        node.set("label", user.user_name)
+
+        node_color = ET.SubElement(node, "viz:color")
+        node_color.set("r", "0")
+        node_color.set("g", "0")
+        node_color.set("b", "255")
+        node_color.set("a", "1")
+
+        node_size = ET.SubElement(node, "viz:size")
+        node_size.set("value", str(user.ecosystem_influence_level))
+
+        edge = ET.SubElement(self.edges, "edge")
+        edge.set("id", user.user_name + "_" + project.project_name)
+        edge.set("source", user.user_name)
+        edge.set("target", project.project_name)
+
+    def insert_edge(self, user, project):
+        edge = ET.SubElement(self.edges, "edge")
+        edge.set("id", user.user_name + "_" + project.project_name)
+        edge.set("source", user.user_name)
+        edge.set("target", project.project_name)
+
+    def create_project_gexf(self, project):
+        self.insert_node_project(project)
+
+        for user in project.users:
+            self.insert_node_user(user, project)
+
+    def create_ecosystem_gexf(self, ecosystem):
+        self.insert_node_ecosystem(ecosystem)
+
+        for project in ecosystem.projects:
+            self.insert_node_project_ecosystem(project, ecosystem)
+
+            for user in project.users:
+                if self.verify_node_user_existence(user):
+                    print("acertar valores")
+                    self.insert_edge(user,project)
+
+                else:
+                    self.insert_node_user_ecosystem(user, project)
+
     def verify_node_user_existence(self, user):
-        if self.gexf.iselement(user.user_name):
+        if self.gexf.findall(user.user_name):
             return True
+
         return False
 
     def write_file(self, gexf_result_file_path):
         gexf_data = ET.tostring(self.gexf)
         gexf_data = str(gexf_data, "utf-8")
         gexf_file = open(gexf_result_file_path + ".gexf", "w")
-        print(type(gexf_data))
+
         gexf_file.write(gexf_data)
 
