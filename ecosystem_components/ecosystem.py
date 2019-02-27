@@ -5,6 +5,7 @@ class ecosystem:
         self.ecosystem_name = ecosystem_name
         self.projects = []
         self.total_ecosystem_influence = 0.0
+        self.total_ecosystem_influence_later_standarization = 0.0
 
     def add_project_to_ecosystem(self, project):
         if self.verify_project_already_in_ecosystem(project):
@@ -13,6 +14,7 @@ class ecosystem:
             print("Adding project " + project.project_name + " to ecosystem " + self.ecosystem_name)
             self.projects.append(project)
             self.total_ecosystem_influence = self.total_ecosystem_influence + project.total_project_influence
+            self.total_ecosystem_influence_later_standarization = self.total_ecosystem_influence
 
     def verify_project_already_in_ecosystem(self, project):
         if project in self.projects:

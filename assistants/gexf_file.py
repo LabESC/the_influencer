@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import calculators.influencer_calculator as calculator
 
 class gexf_file:
 
@@ -122,22 +123,49 @@ class gexf_file:
     def create_ecosystem_gexf(self, ecosystem):
         self.insert_node_ecosystem(ecosystem)
 
+        count = 0
+
         for project in ecosystem.projects:
             self.insert_node_project_ecosystem(project, ecosystem)
 
             for user in project.users:
-                if self.verify_node_user_existence(user):
-                    print("acertar valores")
+                user_node_influence = self.get_node_user_influence(user)
+                #print(user_node_influence)
+
+                if user_node_influence:
+                    count = count + 1
+
+                    user_node_influence = float(user_node_influence)
+
+                    new_influence = calculator.ecosystem_influence_level_calculation(ecosystem, user, user_node_influence)
+
+                    self.update_node_user_size(user, new_influence)
+
+                    #print("acertar valores")
+
                     self.insert_edge(user,project)
 
                 else:
                     self.insert_node_user_ecosystem(user, project)
 
-    def verify_node_user_existence(self, user):
-        if self.gexf.findall(user.user_name):
-            return True
+        print(count)
+
+    def get_node_user_influence(self, user):
+        for node in self.gexf.findall("graph")[0].findall("nodes")[0].findall("node"):
+            if node.attrib["id"] == user.user_name:
+                #print(node)
+                return (node.findall("viz:size")[0].attrib["value"])
 
         return False
+
+    def update_node_user_size(self, user, new_size_value):
+        for node in self.gexf.findall("graph")[0].findall("nodes")[0].findall("node"):
+            if node.attrib["id"] == user.user_name:
+                node.findall("viz:size")[0].set("value", str(new_size_value))
+                return True
+
+        return False
+
 
     def write_file(self, gexf_result_file_path):
         gexf_data = ET.tostring(self.gexf)

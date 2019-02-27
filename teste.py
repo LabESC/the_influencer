@@ -18,8 +18,8 @@ for file in os.listdir(diretorio):
     else:
         project_gexf = gexf_file()
         project_name = file.split("#")[1].replace(".csv","")
-        print("project: " + project_name)
-        print(file)
+        #print("project: " + project_name)
+        #print(file)
 
         csv_info_file = csv_file()
         csv_info_file.load_informations(os.path.join(diretorio, file))
