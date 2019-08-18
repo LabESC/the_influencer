@@ -21,6 +21,9 @@ class project:
 
     def project_influence_standarization(self):
         for user in self.users:
-            user.project_influence_level = round((user.project_influence_level / self.total_project_influence) * 100.0,5)
+            if self.total_project_influence == 0.0:
+                user.project_influence_level = 0.0
+            else:
+                user.project_influence_level = round((user.project_influence_level / self.total_project_influence) * 100.0,5)
 
         self.total_project_influence = 100.0

@@ -44,8 +44,8 @@ for file in os.listdir(diretorio):
                                 status_project.pop(), content_value.pop(), source_learning.pop(),
                                 participation_code.pop(), participation_comment.pop())
 
-            project_user.define_project_influence_level(calculator.user_influence_level_calculation_complete(project_user))
-            project_user.define_ecosystem_influence_level(calculator.user_influence_level_calculation_complete(project_user))
+            project_user.define_project_influence_level(calculator.user_influence_level_calculation_complete(project_user, uses_closeness=False, uses_content_value=False, uses_long_time=False, uses_participation_code=False, uses_participation_comment=False, uses_project_status=False, uses_source=False, uses_status=True))
+            project_user.define_ecosystem_influence_level(calculator.user_influence_level_calculation_complete(project_user, uses_closeness=False, uses_content_value=False, uses_long_time=False, uses_participation_code=False, uses_participation_comment=False, uses_project_status=False, uses_source=False, uses_status=True))
 
             current_project.add_user_to_project(project_user)
             ecosystem_project.add_user_to_project(project_user)
@@ -61,12 +61,12 @@ for file in os.listdir(diretorio):
 
         project_gexf.create_project_gexf(current_project)
 
-        project_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop\\gexf_sample", current_project.project_name))
+        project_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop\\gexf_sample_status", current_project.project_name))
 
 
 ecosystem.ecosystem_influence_standarization()
 
 ecosystem_gexf.create_ecosystem_gexf(ecosystem)
 
-ecosystem_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop", ecosystem.ecosystem_name))
+ecosystem_gexf.write_file(os.path.join("C:\\Users\\faria\\Desktop\\gexf_sample_status", ecosystem.ecosystem_name))
 

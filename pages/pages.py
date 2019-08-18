@@ -21,7 +21,7 @@ class results_frame(base_frame):
     def create_widgets(self):
         title_label = tk.Label(self, text="The Influencer")
         title_label.config(font=("Times New Roman", 44))
-        title_label.grid(padx=100)
+        title_label.grid(padx=200)
 
         text_message = tk.Label(self, text="Your analysis is done!")
         text_message.grid(pady=20)
@@ -47,7 +47,7 @@ class results_frame(base_frame):
 
         self.text_file_location = tk.Text(self, height=2, width=30, )
         self.text_file_location.config(state="disabled")
-        self.text_file_location.grid(padx=30)
+        self.text_file_location.grid(padx=130)
 
         show_project_button = tk.Button(self, text="Show my Project's Influencer!", command=self.show_project)
         show_project_button.grid()
@@ -55,10 +55,10 @@ class results_frame(base_frame):
         self.new_button = tk.Button(self,
                                     anchor=tk.W,
                                     command=lambda: self.controller.show_frame(home_frame),
-                                    padx=5,
+                                    padx=105,
                                     pady=5,
                                     text="Home")
-        self.new_button.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        #self.new_button.grid(padx=105, pady=5, sticky=tk.W+tk.E)
 
     def get_gexf_directory_files(location):
         choices = get_gexf_directory_files_to_vector(location)
@@ -99,10 +99,10 @@ class home_frame(base_frame):
     def create_widgets(self):
         title_label = tk.Label(self, text="The Influencer")
         title_label.config(font=("Times New Roman", 44))
-        title_label.grid(padx=100)
+        title_label.grid(padx=200)
 
         instructions_label = tk.Label(self,
-                                      text="Welcome to The Influencer!\n In order to start your analysis,\n "
+                                      text="Welcome to The Influencer!\nStep 1. In order to start your analysis,\n "
                                            "browse for your SECO's .csv files location:", width=30)
         instructions_label.grid(pady=20)
 
@@ -114,18 +114,48 @@ class home_frame(base_frame):
 
         self.text_directory_location = tk.Text(self, height=2, width=30, )
         self.text_directory_location.config(state="disabled")
-        self.text_directory_location.grid(padx=30)
+        self.text_directory_location.grid(padx=130)
 
-        analysis_button = tk.Button(self, text="Start Analysis!", command=self.start_analysis)
+
+        filters_label = tk.Label(self, text="Step 2. Choose characteristics to be used while analysing:", width=50)
+        filters_label.grid(pady=10)
+
+        self.check_ct = IntVar(value=1)
+        self.checkbutton_ct = Checkbutton(self, text="Closeness to GitHub Project Owner", variable=self.check_ct)
+        self.checkbutton_ct.grid()
+        self.check_lt = IntVar(value=1)
+        self.checkbutton_lt = Checkbutton(self, text="Long-time interaction with the Project", variable=self.check_lt)
+        self.checkbutton_lt.grid()
+        self.check_st = IntVar(value=1)
+        self.checkbutton_st = Checkbutton(self, text="Status in GitHub", variable=self.check_st)
+        self.checkbutton_st.grid()
+        self.check_stp = IntVar(value=1)
+        self.checkbutton_stp = Checkbutton(self, text="Status in Project", variable=self.check_stp)
+        self.checkbutton_stp.grid()
+        self.check_cv = IntVar(value=1)
+        self.checkbutton_cv = Checkbutton(self, text="Content Value", variable=self.check_cv)
+        self.checkbutton_cv.grid()
+        self.check_sl = IntVar(value=1)
+        self.checkbutton_sl = Checkbutton(self, text="Source of Learning", variable=self.check_sl)
+        self.checkbutton_sl.grid()
+        self.check_pcode = IntVar(value=1)
+        self.checkbutton_pcode = Checkbutton(self, text="Participation with Code", variable=self.check_pcode)
+        self.checkbutton_pcode.grid()
+        self.check_pcomm = IntVar(value=1)
+        self.checkbutton_pcomm = Checkbutton(self, text="Participation with Comments", variable=self.check_pcomm)
+        self.checkbutton_pcomm.grid()
+
+
+        analysis_button = tk.Button(self, text="Step 3. Start Analysis!", command=self.start_analysis)
         analysis_button.grid()
 
         self.new_button = tk.Button(self,
                                     anchor=tk.W,
                                     command=lambda: self.controller.show_frame(results_frame),
-                                    padx=5,
+                                    padx=105,
                                     pady=5,
                                     text="Execute")
-        self.new_button.grid(padx=5, pady=5, sticky=tk.W+tk.E)
+        #self.new_button.grid(padx=105, pady=5, sticky=tk.W+tk.E)
 
     def directory_search_button_function(self):
         location = filedialog.askdirectory()
@@ -136,6 +166,7 @@ class home_frame(base_frame):
 
 
     def start_analysis(self):
+        print(self.check_pcomm.get())
         location = self.text_directory_location.get(1.0, 'end-1c')
         complete_location = os.path.join(location, "ecosystem_gexf")
         if not verify_directory_existence(location):
@@ -146,6 +177,7 @@ class home_frame(base_frame):
                     if self.analysis_exists_question(complete_location):
                         print("true")
                 else:
+                    self.filter_option()
                     create_directory_structure(location)
                     self.controller.show_frame(results_frame)
             else:
@@ -163,6 +195,9 @@ class home_frame(base_frame):
             return True
         return False
 
+    def filter_option(self):
+        pass
+
     def verify_csv_files_existence(self, location):
         if verify_csv_files_existence_in_path(location):
             return True
@@ -177,7 +212,7 @@ class python_gui(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.title("The Influencer")
-        self.wm_geometry("550x350")
+        self.wm_geometry("750x550")
         self.create_widgets()
         #self.resizable(0, 0)
 

@@ -42,47 +42,47 @@ def user_influence_level_calculation_complete(user, uses_closeness, uses_long_ti
     return round(influence_level, 5)
 
 def project_closeness_to_github_project_owner(cl_metric):
-    cl_coeficient = 1.0505
+    cl_coeficient = 0.2945
 
     return float(cl_metric) * cl_coeficient
 
 def project_long_time_interaction_with_the_project(lt_metric):
-    lt_coeficient = 2.3283
+    lt_coeficient = 1.3739
 
     return float(lt_metric) * lt_coeficient
 
 def status_github(st_metric):
-    st_coeficient = 0.9671
+    st_coeficient = 0.1906
 
     return float(st_metric) * st_coeficient
 
 def project_status_in_the_project(stp_metric):
-    stp_coeficient = 2.2567
+    stp_coeficient = 1.2775
 
     return float(stp_metric) * stp_coeficient
 
 def project_content_value(cv_metric):
-    cv_coeficient = 2.2443
+    cv_coeficient = 1.2652
 
     return float(cv_metric) * cv_coeficient
 
 def project_source_of_learning(sl_metric):
-    sl_coeficient = 1.5007
+    sl_coeficient = 0.6249
 
     return float(sl_metric) * sl_coeficient
 
 def project_participation_with_code(pcode_metric):
-    pcode_coeficient = 2.3392
+    pcode_coeficient = 1.3517
 
     return float(pcode_metric) * pcode_coeficient
 
 def project_participation_with_comments(pcomm_metric):
-    pcomm_coeficient = 1.8437
+    pcomm_coeficient = 0.8975
 
     return float(pcomm_metric) * pcomm_coeficient
 
 def ecosystem_influence_level_calculation(ecosystem, user, old_influence):
-    influence_level = round((user.ecosystem_influence_level + old_influence) - (status_github(user.user_st_influence_metric) / ecosystem.total_ecosystem_influence_later_standarization),5)
+    influence_level = round((user.ecosystem_influence_level + old_influence) - (status_github(user.user_st_influence_metric) / ecosystem.total_ecosystem_influence_after_standarization),5)
 
     return round(influence_level, 5)
 
